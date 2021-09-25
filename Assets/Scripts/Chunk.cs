@@ -3,41 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Chunk
 {
-    int sizeX = 16;
-    int sizeY = 128;
-    int sizeZ = 16;
+    //Chunk size
+    private const int sizeX = 16;
+    private const int sizeY = 16;
+    private const int sizeZ = 16;
+    public const int cubePerChunk = sizeX * sizeY * sizeZ;
     private Vector3[] vertices;
     private int[] triangles;
+    private Vector3 origin;
     private List<Vector3> verticesList = new List<Vector3>();
     private List<int> trianglesList = new List<int>();
-    public Chunk(Vector3 origin)
+    public Chunk(Vector3 _origin)
     {
+        origin = _origin;
         Init();
     }
     private void Init()
     {
+        //Create the blocks
         List<Block> blocks = new List<Block>();
-        for(int x = 0; x < sizeX; x++)
+        for(int y = 0; y < sizeY; y++)
         {
-            int y = 0;
-            int z = 0;
-            blocks.Add(new Block(new Vector3(x, y, z), blocks.Count));
-            Debug.Log(blocks.Count);
-            foreach(int triangle in blocks[x].triangles)
+            for(int z = 0; z < sizeZ; z++)
             {
-                Debug.Log(triangle);
+                for(int x = 0; x < sizeX; x++)
+                {
+                    blocks.Add(new Block(new Vector3(
+                        origin.x + x, origin.y + y, origin.z + z), 
+                        blocks.Count));
+                }
             }
         }
 
-        int vertexCount = blocks.Count * 8; //8 vertices per cube
-        int triangleCount = blocks.Count * 36; //36 triangles per cube
+        //Defining array size (bc meshes can't be created using lists)
+        int vertexCount = Generation.chunkCount * blocks.Count * 8; //8 vertices per cube
+        int triangleCount = Generation.chunkCount * blocks.Count * 36; //36 triangle indices per cube
         Vector3[] vertices = new Vector3[vertexCount];
         int[] triangles = new int[triangleCount]; 
 
-        foreach(Block cube in blocks)
+        /* Adding vertices and triangles in lists
+           Then convert lists into arrays in the last 2 functions */
+        foreach(Block block in blocks)
         {
-            verticesList.AddRange(cube.vertices);
-            trianglesList.AddRange(cube.triangles);
+            verticesList.AddRange(block.vertices);
+            trianglesList.AddRange(block.triangles);
         }
     }
     public Vector3[] VerticesArray()

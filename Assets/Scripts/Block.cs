@@ -18,45 +18,10 @@ public class Block
 			new Vector3 (blockOrigin.x, blockOrigin.y, blockOrigin.z + 1),
         };
 
-		int index = blockCount * 8;
-		if(blockCount <= 1)
-		{
-			triangles = new int[] {
-            0, 2, 1, //face front
-			0, 3, 2,
-			2, 3, 4, //face top
-			2, 4, 5,
-			1, 2, 5, //face right
-			1, 5, 6,
-			0, 7, 4, //face left
-			0, 4, 3,
-			5, 4, 7, //face back
-			5, 7, 6,
-			0, 6, 7, //face bottom
-			0, 1, 6
-        	};
-		}
-		else if(blockCount == 2)
-		{
-			triangles = new int[] {
-            8, 10, 9, //face front
-			8, 11, 10,
-			10, 11, 12, //face top
-			10, 12, 13,
-			9, 10, 13, //face right
-			9, 13, 14,
-			8, 15, 12, //face left
-			8, 12, 11,
-			13, 12, 15, //face back
-			13, 15, 14,
-			8, 14, 15, //face bottom
-			8, 9, 14
-        	};
-		}
-		else
-		{
-			triangles = new int[] {
-            index + 0, index + 2, index + 1, //face front
+		int index = (blockCount * 8) + ((Generation.chunkCount - 1) * Chunk.cubePerChunk);
+
+		triangles = new int[] {
+        	index + 0, index + 2, index + 1, //face front
 			index + 0, index + 3, index + 2,
 			index + 2, index + 3, index + 4, //face top
 			index + 2, index + 4, index + 5,
@@ -69,6 +34,5 @@ public class Block
 			index + 0, index + 6, index + 7, //face bottom
 			index + 0, index + 1, index + 6
         };
-		}
     }
 }
