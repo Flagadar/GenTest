@@ -5,7 +5,7 @@ public class Block
 {
     public Vector3[] vertices;
     public int[] triangles;
-    public Block(Vector3 blockOrigin, int blockCount)
+    public Block(Vector3 blockOrigin, int blockCount, int chunkIndex)
     {
         vertices = new Vector3[] {
             new Vector3 (blockOrigin.x, blockOrigin.y, blockOrigin.z),
@@ -18,7 +18,7 @@ public class Block
 			new Vector3 (blockOrigin.x, blockOrigin.y, blockOrigin.z + 1),
         };
 
-		int index = (blockCount * 8) + ((Generation.chunkCount - 1) * Chunk.cubePerChunk);
+		int index = (blockCount * 8) + (Chunk.verticesPerChunk * chunkIndex);
 
 		triangles = new int[] {
         	index + 0, index + 2, index + 1, //face front
